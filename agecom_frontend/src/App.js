@@ -18,14 +18,14 @@ function App() {
       <AuthProvider>
         <Routes>
           <Route path="/login" element={<Login />} />
-          <Route path="/add-client" element={<PrivateRoute><Dashboard><AddClient /></Dashboard></PrivateRoute>} />
-          <Route path="/add-contract" element={<PrivateRoute><Dashboard><AddContract /></Dashboard></PrivateRoute>} />
-          <Route path="/add-service-order" element={<PrivateRoute><Dashboard><AddServiceOrder/></Dashboard></PrivateRoute>} />
-          <Route path="/add-employee" element={<PrivateRoute><Dashboard><RegisterEmployee/></Dashboard></PrivateRoute>} />
-          <Route path="/clients" element={<PrivateRoute><Dashboard><Clients /></Dashboard></PrivateRoute>} />
-          <Route path="/contracts" element={<PrivateRoute><Dashboard><Contracts /></Dashboard></PrivateRoute>} />
-          <Route path="/orders" element={<PrivateRoute><Dashboard><Orders /></Dashboard></PrivateRoute>} />
-          <Route path="/employees" element={<PrivateRoute><Dashboard><EmployeeList /></Dashboard></PrivateRoute>} />
+          <Route path="/cadastro/cliente" element={<PrivateRoute><Dashboard><AddClient /></Dashboard></PrivateRoute>} />
+          <Route path="/cadastro/contrato" element={<PrivateRoute><Dashboard><AddContract /></Dashboard></PrivateRoute>} />
+          <Route path="/cadastro/ordem-de-servico" element={<PrivateRoute><Dashboard><AddServiceOrder/></Dashboard></PrivateRoute>} />
+          <Route path="/cadastro/funcionario" element={<PrivateRoute><Dashboard><RegisterEmployee/></Dashboard></PrivateRoute>} />
+          <Route path="/clientes" element={<PrivateRoute><Dashboard><Clients /></Dashboard></PrivateRoute>} />
+          <Route path="/contratos" element={<PrivateRoute><Dashboard><Contracts /></Dashboard></PrivateRoute>} />
+          <Route path="/ordens-de-servico" element={<PrivateRoute><Dashboard><Orders /></Dashboard></PrivateRoute>} />
+          <Route path="/funcionarios" element={<PrivateRoute><Dashboard><EmployeeList /></Dashboard></PrivateRoute>} />
         </Routes>
       </AuthProvider>
     </Router>

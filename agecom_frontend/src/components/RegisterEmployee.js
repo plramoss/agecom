@@ -1,6 +1,13 @@
-import React, { useState } from 'react';
-import api from '../services/api';
-import { Container, TextField, Button, Typography, Box } from '@mui/material';
+import React, { useState, useContext } from 'react';
+import axios from 'axios';
+import { AuthContext } from '../AuthContext';
+import {
+    Box,
+    Button,
+    Container,
+    TextField,
+    Typography,
+} from '@mui/material';
 
 const RegisterEmployee = () => {
     const [username, setUsername] = useState('');
@@ -9,70 +16,100 @@ const RegisterEmployee = () => {
     const [cargo, setCargo] = useState('');
     const [dataAdmissao, setDataAdmissao] = useState('');
 
-    const handleRegister = async (e) => {
+    const { user } = useContext(AuthContext);
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
+        const employeeData = {
+            username,
+            password,
+            registro,
+            cargo,
+            dataAdmissao
+        };
+
         try {
-            await api.post('/admin/funcionario', { username, password, registro, cargo, dataAdmissao });
-            // Adicione lógica adicional de sucesso se necessário
+            await axios.post('/api/employees', employeeData, {
+                headers: {
+                    Authorization: `Bearer ${user.token}`,
+                },
+            });
+            alert('Funcionário registrado com sucesso');
         } catch (error) {
-            console.error('Registration failed', error);
+            console.error('Houve um erro ao registrar o funcionário!', error);
         }
     };
 
     return (
-        <Container maxWidth="sm">
-            <Box mt={5}>
-                <Typography variant="h4" gutterBottom>Register Employee</Typography>
-                <form onSubmit={handleRegister}>
-                    <TextField
-                        label="Username"
-                        variant="outlined"
-                        fullWidth
-                        margin="normal"
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
-                    />
-                    <TextField
-                        label="Password"
-                        type="password"
-                        variant="outlined"
-                        fullWidth
-                        margin="normal"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                    />
-                    <TextField
-                        label="Registro"
-                        variant="outlined"
-                        fullWidth
-                        margin="normal"
-                        value={registro}
-                        onChange={(e) => setRegistro(e.target.value)}
-                    />
-                    <TextField
-                        label="Cargo"
-                        variant="outlined"
-                        fullWidth
-                        margin="normal"
-                        value={cargo}
-                        onChange={(e) => setCargo(e.target.value)}
-                    />
-                    <TextField
-                        label="Data de Admissão"
-                        type="date"
-                        variant="outlined"
-                        fullWidth
-                        margin="normal"
-                        InputLabelProps={{ shrink: true }}
-                        value={dataAdmissao}
-                        onChange={(e) => setDataAdmissao(e.target.value)}
-                    />
-                    <Button type="submit" variant="contained" color="primary" fullWidth>
-                        Register
-                    </Button>
-                </form>
-            </Box>
-        </Container>
+      <Container>
+          <Box
+            component="form"
+            onSubmit={handleSubmit}
+            sx={{
+                mt: 8,
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+            }}
+          >
+              <Typography component="h1" variant="h5">
+                  Registrar Funcionário
+              </Typography>
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                label="Nome de Usuário"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+              />
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                label="Senha"
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                label="Registro"
+                value={registro}
+                onChange={(e) => setRegistro(e.target.value)}
+              />
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                label="Cargo"
+                value={cargo}
+                onChange={(e) => setCargo(e.target.value)}
+              />
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                label="Data de Admissão"
+                type="date"
+                InputLabelProps={{
+                    shrink: true,
+                }}
+                value={dataAdmissao}
+                onChange={(e) => setDataAdmissao(e.target.value)}
+              />
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                sx={{ mt: 3, mb: 2 }}
+              >
+                  Registrar Funcionário
+              </Button>
+          </Box>
+      </Container>
     );
 };
 

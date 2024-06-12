@@ -1,22 +1,31 @@
 import React, { useState, useContext } from 'react';
 import axios from 'axios';
 import { AuthContext } from '../AuthContext';
+import {
+  Box,
+  Button,
+  Container,
+  TextField,
+  Typography,
+} from '@mui/material';
 
 const AddServiceOrder = () => {
-  const [description, setDescription] = useState('');
-  const [creationDate, setCreationDate] = useState('');
+  const [descricao, setDescricao] = useState('');
+  const [dataCriacao, setDataCriacao] = useState('');
   const [status, setStatus] = useState('');
-  const [contractId, setContractId] = useState('');
+  const [contratoId, setContratoId] = useState('');
 
   const { user } = useContext(AuthContext);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const serviceOrderData = {
-      description,
-      creationDate,
+      descricao,
+      dataCriacao,
       status,
-      contractId,
+      contrato: {
+        id: contratoId
+      }
     };
 
     try {
@@ -25,24 +34,73 @@ const AddServiceOrder = () => {
           Authorization: `Bearer ${user.token}`,
         },
       });
-      alert('Service order created successfully');
+      alert('Ordem de serviço criada com sucesso');
     } catch (error) {
-      console.error('There was an error creating the service order!', error);
+      console.error('Houve um erro ao criar a ordem de serviço!', error);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <label>Description:</label>
-      <input type="text" value={description} onChange={(e) => setDescription(e.target.value)} required />
-      <label>Creation Date:</label>
-      <input type="date" value={creationDate} onChange={(e) => setCreationDate(e.target.value)} required />
-      <label>Status:</label>
-      <input type="text" value={status} onChange={(e) => setStatus(e.target.value)} required />
-      <label>Contract ID:</label>
-      <input type="text" value={contractId} onChange={(e) => setContractId(e.target.value)} required />
-      <button type="submit">Create Service Order</button>
-    </form>
+    <Container>
+      <Box
+        component="form"
+        onSubmit={handleSubmit}
+        sx={{
+          mt: 8,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}
+      >
+        <Typography component="h1" variant="h5">
+          Criar Ordem de Serviço
+        </Typography>
+        <TextField
+          margin="normal"
+          required
+          fullWidth
+          label="Descrição"
+          value={descricao}
+          onChange={(e) => setDescricao(e.target.value)}
+        />
+        <TextField
+          margin="normal"
+          required
+          fullWidth
+          label="Data de Criação"
+          type="date"
+          InputLabelProps={{
+            shrink: true,
+          }}
+          value={dataCriacao}
+          onChange={(e) => setDataCriacao(e.target.value)}
+        />
+        <TextField
+          margin="normal"
+          required
+          fullWidth
+          label="Status"
+          value={status}
+          onChange={(e) => setStatus(e.target.value)}
+        />
+        <TextField
+          margin="normal"
+          required
+          fullWidth
+          label="ID do Contrato"
+          value={contratoId}
+          onChange={(e) => setContratoId(e.target.value)}
+        />
+        <Button
+          type="submit"
+          fullWidth
+          variant="contained"
+          sx={{ mt: 3, mb: 2 }}
+        >
+          Criar Ordem de Serviço
+        </Button>
+      </Box>
+    </Container>
   );
 };
 
