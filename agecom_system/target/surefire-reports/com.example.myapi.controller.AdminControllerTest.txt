@@ -1,0 +1,10 @@
+-------------------------------------------------------------------------------
+Test set: com.example.myapi.controller.AdminControllerTest
+-------------------------------------------------------------------------------
+Tests run: 2, Failures: 0, Errors: 2, Skipped: 0, Time elapsed: 23.56 s <<< FAILURE! - in com.example.myapi.controller.AdminControllerTest
+updateFuncionario  Time elapsed: 4.305 s  <<< ERROR!
+java.lang.StackOverflowError
+
+createFuncionario  Time elapsed: 8.552 s  <<< ERROR!
+java.lang.StackOverflowError
+
