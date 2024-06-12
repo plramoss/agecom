@@ -1,28 +1,15 @@
 package com.example.myapi.model;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
 import javax.persistence.Entity;
 
+@EqualsAndHashCode(callSuper = true)
 @Entity
+@Data
 public class ContratoDeManutencao extends Contrato {
 
     private String detalhesManutencao;
     private Integer duracaoEmMeses;
-
-    // Getters e Setters
-
-    public String getDetalhesManutencao() {
-        return detalhesManutencao;
-    }
-
-    public void setDetalhesManutencao(String detalhesManutencao) {
-        this.detalhesManutencao = detalhesManutencao;
-    }
-
-    public Integer getDuracaoEmMeses() {
-        return duracaoEmMeses;
-    }
-
-    public void setDuracaoEmMeses(Integer duracaoEmMeses) {
-        this.duracaoEmMeses = duracaoEmMeses;
-    }
 }

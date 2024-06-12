@@ -1,28 +1,15 @@
 package com.example.myapi.model;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
 import javax.persistence.Entity;
 
+@EqualsAndHashCode(callSuper = true)
 @Entity
+@Data
 public class ContratoDeCompra extends Contrato {
 
     private Double compraPreco;
     private String termosCompra;
-
-    // Getters e Setters
-
-    public Double getCompraPreco() {
-        return compraPreco;
-    }
-
-    public void setCompraPreco(Double compraPreco) {
-        this.compraPreco = compraPreco;
-    }
-
-    public String getTermosCompra() {
-        return termosCompra;
-    }
-
-    public void setTermosCompra(String termosCompra) {
-        this.termosCompra = termosCompra;
-    }
 }
