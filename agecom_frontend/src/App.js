@@ -11,13 +11,15 @@ import Contracts from "./components/Contracts";
 import Clients from "./components/Clients";
 import Orders from "./components/Orders";
 import EmployeeList from "./components/EmployeeList";
+import Home from "./components/Home";
 
 function App() {
   return (
     <Router>
       <AuthProvider>
         <Routes>
-          <Route path="/login" element={<Login />} />
+          <Route path="/" element={<Login />} />
+          <Route path={"/home"} element={<PrivateRoute><Dashboard><Home /></Dashboard></PrivateRoute>}/>
           <Route path="/cadastro/cliente" element={<PrivateRoute><Dashboard><AddClient /></Dashboard></PrivateRoute>} />
           <Route path="/cadastro/contrato" element={<PrivateRoute><Dashboard><AddContract /></Dashboard></PrivateRoute>} />
           <Route path="/cadastro/ordem-de-servico" element={<PrivateRoute><Dashboard><AddServiceOrder/></Dashboard></PrivateRoute>} />
@@ -34,7 +36,7 @@ function App() {
 
 function PrivateRoute({ children }) {
   const token = localStorage.getItem('token');
-  return token ? children : children;
+  return token ? children : <Navigate to={"/"} />;
 }
 
 export default App;

@@ -1,41 +1,43 @@
 package com.example.myapi.controller;
 
-import com.example.myapi.model.Usuario;
-import com.example.myapi.service.UsuarioService;
+import com.example.myapi.model.JwtRequest;
+import com.example.myapi.model.JwtResponse;
+import com.example.myapi.service.CustomUserDetailsService;
+import com.example.myapi.util.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/api/auth")
 public class UserController {
 
     @Autowired
-    private UsuarioService usuarioService;
+    private AuthenticationManager authenticationManager;
 
     @Autowired
-    private PasswordEncoder passwordEncoder;
+    private CustomUserDetailsService customUserDetailsService;
+
+    @Autowired
+    private JwtTokenUtil jwtTokenUtil;
 
     @PostMapping("/login")
-    public String login(@RequestBody Usuario usuario) {
-        Usuario foundUser = usuarioService.findByUsername(usuario.getUsername());
-        if (foundUser != null && passwordEncoder.matches(usuario.getPassword(), foundUser.getPassword())) {
-            return "Login successful";
-        } else {
-            return "Login failed";
-        }
+    public JwtResponse login(@RequestBody JwtRequest jwtRequest) throws Exception {
+        authenticate(jwtRequest.getUsername(), jwtRequest.getPassword());
+
+        final UserDetails userDetails = customUserDetailsService.loadUserByUsername(jwtRequest.getUsername());
+        final String token = jwtTokenUtil.generateToken(userDetails);
+
+        return new JwtResponse(token);
     }
 
-    @GetMapping("/logout")
-    public String logout(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
-        if (authentication != null) {
-            new SecurityContextLogoutHandler().logout(request, response, authentication);
+    private void authenticate(String username, String password) throws Exception {
+        try {
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+        } catch (Exception e) {
+            throw new Exception("Usuário inexistente ou senha inválida", e);
         }
-        return "Logout successful";
     }
 }

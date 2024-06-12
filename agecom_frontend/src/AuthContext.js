@@ -1,51 +1,42 @@
 import React, { createContext, useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
-const AuthContext = createContext();
+export const AuthContext = createContext();
 
-const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(() => {
-    const user = localStorage.getItem('user');
-    return user ? JSON.parse(user) : null;
-  });
-
+export const AuthProvider = ({ children }) => {
+  const [user, setUser] = useState(null);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      setUser({ token });
+    }
+  }, []);
 
   const login = async (username, password) => {
     try {
-      const response = await axios.post('/api/user/login', { username, password });
-      const userData = {
-        username,
-        token: response.data.token,
-        role: response.data.role
-      };
-      setUser(userData);
-      localStorage.setItem('user', JSON.stringify(userData));
-      // navigate('/dashboard');
+      const response = await axios.post('/api/auth/login', { username, password });
+      const token = response.data.token;
+      console.log(response)
+      setUser({ token });
+      localStorage.setItem('token', token);
+      navigate('/home');
     } catch (error) {
       console.error('Login failed:', error);
-      alert('Login failed');
     }
   };
 
   const logout = () => {
     setUser(null);
-    localStorage.removeItem('user');
-    // navigate('/login');
+    localStorage.removeItem('token');
+    navigate('/');
   };
 
-  useEffect(() => {
-    if (!user) {
-      // navigate('/login');
-    }
-  }, [user, navigate]);
-
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
-      {children}
-    </AuthContext.Provider>
+      <AuthContext.Provider value={{ user, login, logout }}>
+        {children}
+      </AuthContext.Provider>
   );
 };
-
-export { AuthContext, AuthProvider };
