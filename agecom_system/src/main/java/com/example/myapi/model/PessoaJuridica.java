@@ -6,9 +6,9 @@ import lombok.EqualsAndHashCode;
 import javax.persistence.Entity;
 import java.util.Date;
 
-@EqualsAndHashCode(callSuper = true)
 @Entity
 @Data
+@EqualsAndHashCode(callSuper = true)
 public class PessoaJuridica extends Cliente {
 
     private String cnpj;

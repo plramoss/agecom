@@ -5,9 +5,9 @@ import lombok.EqualsAndHashCode;
 
 import javax.persistence.Entity;
 
-@EqualsAndHashCode(callSuper = true)
 @Entity
 @Data
+@EqualsAndHashCode(callSuper = true)
 public class ContratoDeManutencao extends Contrato {
 
     private String detalhesManutencao;
