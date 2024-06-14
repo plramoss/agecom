@@ -1,9 +1,13 @@
+com\example\myapi\filter\JwtRequestFilter.class
+com\example\myapi\config\SecurityConfig$1.class
 com\example\myapi\service\CustomUserDetailsService.class
 com\example\myapi\controller\AdminController.class
 com\example\myapi\controller\ClienteController.class
 com\example\myapi\model\ContratoDeCompra.class
 com\example\myapi\model\ContratoDeAluguel.class
 com\example\myapi\model\ContratoDeManutencao.class
+com\example\myapi\model\JwtRequest.class
+com\example\myapi\model\JwtResponse.class
 com\example\myapi\controller\ContratoController.class
 com\example\myapi\model\OrdemDeServico.class
 com\example\myapi\repository\FuncionarioRepository.class
@@ -19,10 +23,12 @@ com\example\myapi\controller\UserController.class
 com\example\myapi\service\UsuarioService.class
 com\example\myapi\model\Funcionario.class
 com\example\myapi\model\PessoaFisica.class
+com\example\myapi\util\JwtTokenUtil.class
 com\example\myapi\repository\UsuarioRepository.class
 com\example\myapi\model\Usuario.class
 com\example\myapi\repository\ContratoRepository.class
 com\example\myapi\service\OrdemDeServicoService.class
+com\example\myapi\config\CorsConfig.class
 com\example\myapi\model\TipoContrato.class
 com\example\myapi\repository\EnderecoRepository.class
 com\example\myapi\service\ClienteService.class

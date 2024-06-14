@@ -1,77 +1,61 @@
 import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { AuthContext } from '../AuthContext';
-import {
-    Box,
-    Button,
-    Container,
-    Table,
-    TableBody,
-    TableCell,
-    TableContainer,
-    TableHead,
-    TableRow,
-    Typography,
-} from '@mui/material';
+import { Box, Container, Typography, Table, TableBody, TableCell, TableHead, TableRow, Paper } from '@mui/material';
 
 const EmployeeList = () => {
-    const [employees, setEmployees] = useState([]);
+    const [funcionarios, setFuncionarios] = useState([]);
     const { user } = useContext(AuthContext);
 
     useEffect(() => {
-        const fetchEmployees = async () => {
+        const fetchFuncionarios = async () => {
             try {
-                const response = await axios.get('/api/employees', {
+                const response = await axios.get('/api/funcionarios', {
                     headers: {
                         Authorization: `Bearer ${user.token}`,
                     },
                 });
-                setEmployees(response.data);
+                setFuncionarios(response.data);
             } catch (error) {
-                console.error('Erro ao buscar funcionários:', error);
+                console.error('Erro ao buscar funcionários!', error);
             }
         };
 
-        fetchEmployees();
+        fetchFuncionarios();
     }, [user]);
 
     return (
-      <Container>
-          <Box
-            sx={{
-                mt: 8,
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-            }}
-          >
-              <Typography component="h1" variant="h5" sx={{ mb: 2 }}>
-                  Lista de Funcionários
-              </Typography>
-              <TableContainer>
-                  <Table>
-                      <TableHead>
-                          <TableRow>
-                              <TableCell>Nome de Usuário</TableCell>
-                              <TableCell>Registro</TableCell>
-                              <TableCell>Cargo</TableCell>
-                              <TableCell>Data de Admissão</TableCell>
-                          </TableRow>
-                      </TableHead>
-                      <TableBody>
-                          {employees.map((employee) => (
-                            <TableRow key={employee.id}>
-                                <TableCell>{employee.username}</TableCell>
-                                <TableCell>{employee.registro}</TableCell>
-                                <TableCell>{employee.cargo}</TableCell>
-                                <TableCell>{employee.dataAdmissao}</TableCell>
+        <Container maxWidth="lg">
+            <Box sx={{ mt: 5 }}>
+                <Typography variant="h4" component="h1" gutterBottom>
+                    Lista de Funcionários
+                </Typography>
+                <Paper>
+                    <Table>
+                        <TableHead>
+                            <TableRow>
+                                <TableCell>ID</TableCell>
+                                <TableCell>Nome</TableCell>
+                                <TableCell>Cargo</TableCell>
+                                <TableCell>Data de Admissão</TableCell>
+                                <TableCell>Registro</TableCell>
                             </TableRow>
-                          ))}
-                      </TableBody>
-                  </Table>
-              </TableContainer>
-          </Box>
-      </Container>
+                        </TableHead>
+                        <TableBody>
+                            {funcionarios.map((funcionario) => (
+                                <TableRow key={funcionario.id}>
+                                    <TableCell>{funcionario.id}</TableCell>
+                                    <TableCell>{funcionario.nome}</TableCell>
+                                    <TableCell>{funcionario.cargo}</TableCell>
+                                    <TableCell>{funcionario.dataAdmissao}</TableCell>
+                                    <TableCell>{funcionario.registro}</TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                </Paper>
+            </Box>
+        </Container>
     );
 };
 

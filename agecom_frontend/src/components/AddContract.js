@@ -1,22 +1,12 @@
 import React, { useState, useContext } from 'react';
 import axios from 'axios';
 import { AuthContext } from '../AuthContext';
-import {
-  Box,
-  Button,
-  Container,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-  TextField,
-  Typography,
-} from '@mui/material';
+import { Box, Button, Container, MenuItem, TextField, Typography } from '@mui/material';
 
 const AddContract = () => {
   const [status, setStatus] = useState('');
-  const [tipo, setTipo] = useState('');
   const [clienteId, setClienteId] = useState('');
+  const [tipo, setTipo] = useState('');
   const [compraPreco, setCompraPreco] = useState('');
   const [termosCompra, setTermosCompra] = useState('');
   const [detalhesManutencao, setDetalhesManutencao] = useState('');
@@ -30,146 +20,138 @@ const AddContract = () => {
     e.preventDefault();
     const contractData = {
       status,
+      clienteId,
       tipo,
-      cliente: {
-        id: clienteId
-      },
-      compraPreco: tipo === 'Contrato de Compra' ? compraPreco : undefined,
-      termosCompra: tipo === 'Contrato de Compra' ? termosCompra : undefined,
-      detalhesManutencao: tipo === 'Contrato de Manutenção' ? detalhesManutencao : undefined,
-      duracaoEmMeses: tipo === 'Contrato de Manutenção' ? duracaoEmMeses : undefined,
-      rentalRate: tipo === 'Contrato de Aluguel' ? rentalRate : undefined,
-      periodoAluguel: tipo === 'Contrato de Aluguel' ? periodoAluguel : undefined,
+      compraPreco: tipo === 'ContratoDeCompra' ? compraPreco : undefined,
+      termosCompra: tipo === 'ContratoDeCompra' ? termosCompra : undefined,
+      detalhesManutencao: tipo === 'ContratoDeManutencao' ? detalhesManutencao : undefined,
+      duracaoEmMeses: tipo === 'ContratoDeManutencao' ? duracaoEmMeses : undefined,
+      rentalRate: tipo === 'ContratoDeAluguel' ? rentalRate : undefined,
+      periodoAluguel: tipo === 'ContratoDeAluguel' ? periodoAluguel : undefined,
     };
 
     try {
-      await axios.post('/api/contracts', contractData, {
+      await axios.post('/api/contratos', contractData, {
         headers: {
           Authorization: `Bearer ${user.token}`,
         },
       });
       alert('Contrato criado com sucesso');
     } catch (error) {
-      console.error('Houve um erro ao criar o contrato!', error);
+      console.error('Erro ao criar contrato!', error);
     }
   };
 
   return (
-    <Container>
-      <Box
-        component="form"
-        onSubmit={handleSubmit}
-        sx={{
-          mt: 8,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-        }}
-      >
-        <Typography component="h1" variant="h5">
-          Criar Contrato
-        </Typography>
-        <TextField
-          margin="normal"
-          required
-          fullWidth
-          label="Status"
-          value={status}
-          onChange={(e) => setStatus(e.target.value)}
-        />
-        <FormControl fullWidth margin="normal">
-          <InputLabel>Tipo</InputLabel>
-          <Select
-            value={tipo}
-            onChange={(e) => setTipo(e.target.value)}
-            required
-          >
-            <MenuItem value="">
-              <em>Selecione o Tipo</em>
-            </MenuItem>
-            <MenuItem value="Contrato de Compra">Contrato de Compra</MenuItem>
-            <MenuItem value="Contrato de Manutenção">Contrato de Manutenção</MenuItem>
-            <MenuItem value="Contrato de Aluguel">Contrato de Aluguel</MenuItem>
-          </Select>
-        </FormControl>
-        {tipo === 'Contrato de Compra' && (
-          <>
+      <Container maxWidth="sm">
+        <Box sx={{ mt: 5 }}>
+          <Typography variant="h4" component="h1" gutterBottom>
+            Cadastro de Contrato
+          </Typography>
+          <form onSubmit={handleSubmit}>
             <TextField
-              margin="normal"
-              required
-              fullWidth
-              label="Preço de Compra"
-              value={compraPreco}
-              onChange={(e) => setCompraPreco(e.target.value)}
+                label="Status"
+                type="text"
+                fullWidth
+                margin="normal"
+                value={status}
+                onChange={(e) => setStatus(e.target.value)}
+                required
             />
             <TextField
-              margin="normal"
-              required
-              fullWidth
-              label="Termos de Compra"
-              value={termosCompra}
-              onChange={(e) => setTermosCompra(e.target.value)}
-            />
-          </>
-        )}
-        {tipo === 'Contrato de Manutenção' && (
-          <>
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              label="Detalhes da Manutenção"
-              value={detalhesManutencao}
-              onChange={(e) => setDetalhesManutencao(e.target.value)}
+                label="ID do Cliente"
+                type="text"
+                fullWidth
+                margin="normal"
+                value={clienteId}
+                onChange={(e) => setClienteId(e.target.value)}
+                required
             />
             <TextField
-              margin="normal"
-              required
-              fullWidth
-              label="Duração em Meses"
-              value={duracaoEmMeses}
-              onChange={(e) => setDuracaoEmMeses(e.target.value)}
-            />
-          </>
-        )}
-        {tipo === 'Contrato de Aluguel' && (
-          <>
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              label="Taxa de Aluguel"
-              value={rentalRate}
-              onChange={(e) => setRentalRate(e.target.value)}
-            />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              label="Período de Aluguel"
-              value={periodoAluguel}
-              onChange={(e) => setPeriodoAluguel(e.target.value)}
-            />
-          </>
-        )}
-        <TextField
-          margin="normal"
-          required
-          fullWidth
-          label="ID do Cliente"
-          value={clienteId}
-          onChange={(e) => setClienteId(e.target.value)}
-        />
-        <Button
-          type="submit"
-          fullWidth
-          variant="contained"
-          sx={{ mt: 3, mb: 2 }}
-        >
-          Criar Contrato
-        </Button>
-      </Box>
-    </Container>
+                label="Tipo de Contrato"
+                select
+                fullWidth
+                margin="normal"
+                value={tipo}
+                onChange={(e) => setTipo(e.target.value)}
+                required
+            >
+              <MenuItem value="ContratoDeCompra">Contrato de Compra</MenuItem>
+              <MenuItem value="ContratoDeManutencao">Contrato de Manutenção</MenuItem>
+              <MenuItem value="ContratoDeAluguel">Contrato de Aluguel</MenuItem>
+            </TextField>
+            {tipo === 'ContratoDeCompra' && (
+                <>
+                  <TextField
+                      label="Preço de Compra"
+                      type="text"
+                      fullWidth
+                      margin="normal"
+                      value={compraPreco}
+                      onChange={(e) => setCompraPreco(e.target.value)}
+                      required
+                  />
+                  <TextField
+                      label="Termos de Compra"
+                      type="text"
+                      fullWidth
+                      margin="normal"
+                      value={termosCompra}
+                      onChange={(e) => setTermosCompra(e.target.value)}
+                      required
+                  />
+                </>
+            )}
+            {tipo === 'ContratoDeManutencao' && (
+                <>
+                  <TextField
+                      label="Detalhes da Manutenção"
+                      type="text"
+                      fullWidth
+                      margin="normal"
+                      value={detalhesManutencao}
+                      onChange={(e) => setDetalhesManutencao(e.target.value)}
+                      required
+                  />
+                  <TextField
+                      label="Duração em Meses"
+                      type="text"
+                      fullWidth
+                      margin="normal"
+                      value={duracaoEmMeses}
+                      onChange={(e) => setDuracaoEmMeses(e.target.value)}
+                      required
+                  />
+                </>
+            )}
+            {tipo === 'ContratoDeAluguel' && (
+                <>
+                  <TextField
+                      label="Taxa de Aluguel"
+                      type="text"
+                      fullWidth
+                      margin="normal"
+                      value={rentalRate}
+                      onChange={(e) => setRentalRate(e.target.value)}
+                      required
+                  />
+                  <TextField
+                      label="Período de Aluguel"
+                      type="text"
+                      fullWidth
+                      margin="normal"
+                      value={periodoAluguel}
+                      onChange={(e) => setPeriodoAluguel(e.target.value)}
+                      required
+                  />
+                </>
+            )}
+            <Button type="submit" variant="contained" color="primary" fullWidth sx={{ mt: 2 }}>
+              Criar Contrato
+            </Button>
+          </form>
+        </Box>
+      </Container>
   );
 };
 

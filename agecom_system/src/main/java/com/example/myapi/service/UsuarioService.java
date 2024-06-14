@@ -9,6 +9,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UsuarioService {
@@ -40,7 +41,7 @@ public class UsuarioService {
         return funcionarioRepository.save(funcionario);
     }
 
-    public Usuario findByUsername(String username) {
+    public Optional<Usuario> findByUsername(String username) {
         return usuarioRepository.findByUsername(username);
     }
 }
